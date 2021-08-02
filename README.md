@@ -3,3 +3,5 @@ The puprose of this project is to document the Penetration Test against the web 
 
 * Find any vulnerabilities and exploit them on the Wordpress web servers
 * Document the results of the attack and recommendations for hardening the system
+
+All credentials have been redacted from this report
