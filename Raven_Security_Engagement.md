@@ -75,8 +75,8 @@ Inspected the /var/www/html/ directory and found MySQL database credentials in t
 Used mySQL command line tool to inspect the database to see if there was anything interesting, such as a users table that could potentially show passwords. Discovered a table called wp_users that would be the first place to start.
 
 ```
-mysql -u root -pREDACTED -D wordpress -e "show tables;"
-mysql -u root -pREDACTED -D wordpress -e "select * from wp_users;"
+mysql -u root -pPASSWORD_REDACTED -D wordpress -e "show tables;"
+mysql -u root -pPASSWORD_REDACTED -D wordpress -e "select * from wp_users;"
 ```
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_users_table.JPG "Users table")
@@ -84,7 +84,7 @@ mysql -u root -pREDACTED -D wordpress -e "select * from wp_users;"
 Since there is credentials here, decided to search the remainder of the database to see if there was anything else interesting. Located both Flag 3 and Flag 4 in the wp_posts table
 
 ```
-mysql -u root -pREDACTED -D wordpress -e "select * from wp_users;"
+mysql -u root -pPASSWORD_REDACTED -D wordpress -e "select * from wp_users;"
 ```
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_Flag3_Flag4.JPG "Flag 3 & Flag 4")
