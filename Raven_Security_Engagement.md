@@ -97,7 +97,7 @@ john hashes.text --wordlist=/usr/share/wordlists/rockyou.txt
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_john.JPG "John The Ripper")
 
-With stevens credentials, now used ssh to log in with stevens account. Checked and discovered that steven has sudo privileges without password for python. Following this, immediately executed a python command line code that would allow spawning of a privileged shell.
+With stevens credentials, now used ssh to log in with stevens account. Checked and discovered that steven has sudo privileges for python. Following this, immediately executed a python command line script that would allow spawning of a privileged shell.
 
 ```
 sudo -l
@@ -106,7 +106,7 @@ sudo python -c 'import pty; pty.spawn("/bin/bash")'
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_escalation.JPG "Privilege Escalation to Root")
 
-Changed to '/root' and read out the final flag of flag 4. This step was unneccassary since it was previously found in the database, but is used as proof of escelation. With this level of access, persistence can be established and we have full control of this web server.
+Changed to '/root' and read out the final flag of flag 4. This step was unneccassary since it was previously found in the database but is used as proof of escelation. With this level of access, persistence can be established and we have full control of this web server.
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_flag4_root.JPG "Flag 4 as Root")
 
