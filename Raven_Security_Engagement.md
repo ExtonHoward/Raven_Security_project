@@ -31,13 +31,13 @@ nmap -sV -O 192.168.1.110
 
 Determined this machine is a web server with a variety of ports open
 
-| Port | Service Version |
-| :---: | :---: |
-| 22 | OpenSSH 6.7p1 Debian |
-| 80 | Apache httpd 2.4.10 |
-| 111 | rpcbind 2-4 |
-| 139 | Netbios Samba 3.x-4.x |
-| 445 | Netbios Samba 3.x-4.x |
+| Port | Service | Version |
+| :---: | :---: | :---: |
+| 22 | ssh | OpenSSH 6.7p1 Debian 5+deb8u4 |
+| 80 | http | Apache httpd 2.4.10 ((Debian)) |
+| 111 | rpcbind | 2-4 (RPC #10000) |
+| 139 | netbios-ssn | Netbios Samba 3.x-4.x |
+| 445 | netbios-ssn | Netbios Samba 3.x-4.x |
 
 First thing that caught my eye is that a web server is up and running. Opened a browser and navigated to 192.168.1.110. Found a web server with an active page running wordpress. While navigating around the web page, discovered an exposed flag under the footer of the service tab
 
@@ -185,7 +185,20 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag3_CLEAN.jpg "Flag 3")
 
-Found 3 of the 4 target flags. 
+Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Attempted to just switch to the root account. Was prompted for a password and unbeliveably was able to guess the exact password. The root password was as easy, if not easier, than guessing user michael's password from Target 1.
+
+```
+su root
+```
+
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_su_root_clean.jpg "Switch to Root")
+
+And with that, it was easy to capture Flag 4.
+
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag4_CLEAN.jpg "Flag 4")
+
+
+After guessing the root user password, went to check Target 1 & found the root user on Target 1 had the same password.
 
 ## Vulnerabilities and Mitigation ##
 Several vulnerabilities were discovered during the completion of this engagement. Target 1 has numerous critical vulnerabilities that should be addressed immediately
@@ -249,7 +262,12 @@ Mitigation
 * Remove Root credentials from the wp-config.php file
 * Create a different user to be the default user to the MySQL database
 
+### Root Password easily guessed ###
+Target 1 and Target 2 had an unbelieveably easy password on the root account allowing it to be guessed. Both web servers used the same, easily guessed password for root account.
+
+Mitigation
+* Change the root password to a long and complex password
 
 ## Conclusion ##
 
-Target 1 had many substantial vulnerabilities. The quickest methods to increase the security of Target 1 is to update to the latest version of Wordpress, close extra ports, and apply account lockouts. Target 2 was better protected and still allowed shell access to the attacker. MySQL was running as root and could allow an escalation to a root user.
+Target 1 had many substantial vulnerabilities. The quickest methods to increase the security of Target 1 is to update to the latest version of Wordpress, close extra ports, and apply account lockouts. Target 2 was better protected but still allowed a backdoor and an easily guessed root user password. Change the password on the root account and update Wordpress to the latest version. Also, on both Target 1 & 2, create & use a non-privileged account for the MySQL database.
