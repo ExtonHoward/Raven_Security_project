@@ -191,11 +191,11 @@ Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus n
 su root
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_su_root_clean.jpg "Switch to Root")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_su_root_clean.JPG "Switch to Root")
 
 And with that, it was easy to capture Flag 4.
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag4_CLEAN.jpg "Flag 4")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag4_clean.JPG "Flag 4")
 
 
 After guessing the root user password, went to check Target 1 & found the root user on Target 1 had the same password.
