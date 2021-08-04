@@ -45,7 +45,7 @@ Traffic to these services should be carefully monitored. To this end, we have im
 #### Excessive HTTP Errors
 Excessive HTTP Errors is implemented as follows:
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Defensive_Report/excessive_http_error_rule.JPG "Excessive HTTP Errors")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Defensive_Report/excessive_HTTP_error_rule.JPG "Excessive HTTP Errors")
 
   - Metric:
       - **WHEN count() GROUPED OVER top 5 'http.response.status_code'**
@@ -56,7 +56,7 @@ Excessive HTTP Errors is implemented as follows:
   - Reliability:
       - **This is a highly reliable alert. An indicator of Brute Force Attacks is a large uptick of http response code 401/Unauthorized.** 
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Defensive_Report/http_errors.JPG "HTTP Errors")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Defensive_Report/HTTP_errors.JPG "HTTP Errors")
 
 #### HTTP Request Alerts
 HTTP Request Alerts is implemented as follows:

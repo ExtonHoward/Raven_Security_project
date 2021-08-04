@@ -17,7 +17,7 @@ The team was tasked with performing network scans, finding any vulnerabilities t
 | 192.168.1.110 | Target 1 |
 | 192.168.1.115 | Target 2 |
 
-![alt text](/Network_Topology.png "Network Topology")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Network_Topology.png "Network Topology")
 
 ## Target 1 Engagement ##
 
@@ -27,7 +27,7 @@ Scanned target computer using nmap
 nmap -sV -O 192.168.1.110
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_nmap.JPG "nmap results")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_nmap.JPG "nmap results")
 
 Determined this machine is a web server with a variety of ports open
 
@@ -41,7 +41,7 @@ Determined this machine is a web server with a variety of ports open
 
 First thing that caught my eye is that a web server is up and running. Opened a browser and navigated to 192.168.1.110. Found a web server with an active page running wordpress. While navigating around the web page, discovered an exposed flag under the footer of the service tab
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_flag1_clean.JPG "Flag 1")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_flag1_clean.JPG "Flag 1")
 
 Decided to use wpscan to enumerate users and check for vulnerabilities on the wordpress server
 
@@ -49,7 +49,7 @@ Decided to use wpscan to enumerate users and check for vulnerabilities on the wo
 wpscan --url http://192.168.1.110/wprdpress --enumerate u
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_wpscan_brute_force.JPG "Users with Brute Force Vulnerabilities")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_wpscan_brute_force.JPG "Users with Brute Force Vulnerabilities")
 
 Discovered 2 users, michael and steven, with potential brute force vulnerabilities. Decided to start with michael. Attempted to SSH into Target 1 and guess the password amongst a few really simple options. Did not successfully guess within the first 6 tries. Started Hydra with a wordlist to determine login credentials
 
@@ -57,7 +57,7 @@ Discovered 2 users, michael and steven, with potential brute force vulnerabiliti
 hydra -l michael -P /usr/share/wordlists/rockyou.txt 192.168.1.110 -t 4 ssh
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_hydra.JPG "Hydra")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_hydra.JPG "Hydra")
 
 Discovered michaels password and logged in via ssh. Found a regular user account with no sudo privileges. Looked around to see what else was in this account. Searched for flags & located flag 2 in the /var/www dir
 
@@ -66,11 +66,11 @@ locate flag
 cat /var/www/flag2.txt
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_flag2_clean.JPG "Flag 2")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_flag2_clean.JPG "Flag 2")
 
 Inspected the /var/www/html/ directory and found MySQL database credentials in the wp-config.php file.
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_mysql_creds.JPG "Credentials")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_mysql_creds.JPG "Credentials")
 
 Used mySQL command line tool to inspect the database to see if there was anything interesting, such as a users table that could potentially show passwords. Discovered a table called wp_users that would be the first place to start
 
@@ -79,7 +79,7 @@ mysql -u root -pPASSWORD_REDACTED -D wordpress -e "show tables;"
 mysql -u root -pPASSWORD_REDACTED -D wordpress -e "select * from wp_users;"
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_users_table.JPG "Users table")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_users_table.JPG "Users table")
 
 Found hashed credentials in the Users table. Decided to search the remainder of the database to see if there was anything else interesting. Located both Flag 3 and Flag 4 in the wp_posts table
 
@@ -87,7 +87,7 @@ Found hashed credentials in the Users table. Decided to search the remainder of 
 mysql -u root -pPASSWORD_REDACTED -D wordpress -e "select * from wp_users;"
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_Flag3_Flag4.JPG "Flag 3 & Flag 4")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_Flag3_Flag4.JPG "Flag 3 & Flag 4")
 
 Discovered usernames and password hashes in the wp_users table. Since michael's password was previously determined, only copied steven's credentials to the Kali machine. Fired up John the Ripper to get to work on breaking steven's credentials
 
@@ -95,7 +95,7 @@ Discovered usernames and password hashes in the wp_users table. Since michael's 
 john hashes.text --wordlist=/usr/share/wordlists/rockyou.txt
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_john.JPG "John The Ripper")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_john.JPG "John The Ripper")
 
 Once steven's credentials were cracked, the team used ssh to log in with steven's account. Checked and discovered that steven has sudo privileges without a password for python. The team executed a python command line script that would allow spawning of a privileged shell
 
@@ -104,11 +104,11 @@ sudo -l
 sudo python -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_escalation.JPG "Privilege Escalation to Root")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_escalation.JPG "Privilege Escalation to Root")
 
 The team now has root access to the machine. Navigated to `/root` directory and read out the final flag of flag 4
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T1_flag4_root.JPG  "Flag 4 as Root")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_flag4_root.JPG  "Flag 4 as Root")
 
 
 ## Target 2 Engagement ##
@@ -119,7 +119,7 @@ Scanned target using nmap
 nmap -sV -O 192.168.1.115
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_nmap.JPG "nmap results")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_nmap.JPG "nmap results")
 
 Target 2 looks identical to Target 1. Target 2 has the multiple ports open with services running
 
@@ -137,7 +137,7 @@ Used nikto for further enumeration of the site
 nikto -C all -h 192.168.1.115
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_nikto.JPG "nikto results")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_nikto.JPG "nikto results")
 
 nikto shows multiple hidden subdomains. After inspecting the subdomains, decided to use gobuster for further enumeration
 
@@ -145,19 +145,19 @@ nikto shows multiple hidden subdomains. After inspecting the subdomains, decided
 gobuster -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt dir -u 192.168.1.115
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_gobuster.JPG "gobuster results")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_gobuster.JPG "gobuster results")
 
 gobuster revealed more subdomains. The vendor subdomain is intriguing, so shall start with that. Inspected `http://192.168.1.115/vendor` and found a list of files and directories.
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_vendor_dir.JPG "vendor directory")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_vendor_dir.JPG "vendor directory")
 
 Started looking through the directory. Found interesting items in the sub directories, and noticed PATH had the newest timestamp. Found Flag 1 inside the PATH file
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag1_CLEAN.JPG "Flag 1")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag1_CLEAN.JPG "Flag 1")
 
 Searched around more & discovered a file referring to specific security vulnerabilities to this version of PHPMailer. Confirmed version of PHPMailer is vulnerable to a RCE exploit listed using searchsploit. The team found and modified an exploit to the vulnerability
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2-exploit.JPG "Bash Exploit Script")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2-exploit.JPG "Bash Exploit Script")
 
 Ran the exploit. Tested operation of the exploit, then set up a listener on the Kali and used the exploit to have Target 2 call my Kali. Exported a proper shell using python
 
@@ -169,13 +169,13 @@ python -c 'import pty;pty.spawn("/bin/bash")'
 export TERM=linux
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_reverse_shell.JPG "Exploit Reverse Shell Command")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_reverse_shell.JPG "Exploit Reverse Shell Command")
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_shell.JPG "Getting the Shell!")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_shell.JPG "Getting the Shell!")
 
 Took stock of what we had. Found Flag 2 in the /var/www directory
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag2_CLEAN.JPG "Flag 2")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag2_CLEAN.JPG "Flag 2")
 
 And found the location of Flag 3. Had to return to the web browser to read it out
 
@@ -183,7 +183,7 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 192.168.1.115/wordpress/wp-content/uploads/2018/11/flag3.png
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag3_CLEAN.jpg "Flag 3")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag3_CLEAN.jpg "Flag 3")
 
 Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Attempted to just switch to the root account. Was prompted for a password and unbeliveably was able to guess the exact password. The root password was as easy, if not easier, than guessing user michael's password from Target 1.
 
@@ -191,11 +191,11 @@ Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus n
 su root
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_su_root_clean.jpg "Switch to Root")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_su_root_clean.jpg "Switch to Root")
 
 And with that, it was easy to capture Flag 4.
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag4_CLEAN.jpg "Flag 4")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag4_CLEAN.jpg "Flag 4")
 
 
 After guessing the root user password, went to check Target 1 & found the root user on Target 1 had the same password.
