@@ -137,7 +137,7 @@ Used nikto for further enumeration of the site
 nikto -C all -h 192.168.1.115
 ```
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_nikto.JPG "nikto results")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_nikto.JPG "nikto results")
 
 nikto shows multiple hidden subdomains. After inspecting the subdomains, decided to use gobuster for further enumeration
 
@@ -145,19 +145,19 @@ nikto shows multiple hidden subdomains. After inspecting the subdomains, decided
 gobuster -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt dir -u 192.168.1.115
 ```
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_gobuster.JPG "gobuster results")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_gobuster.JPG "gobuster results")
 
 gobuster revealed more subdomains. The vendor subdomain is intriguing, so shall start with that. Inspected `http://192.168.1.115/vendor` and found a list of files and directories.
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_vendor_dir.JPG "vendor directory")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_vendor_dir.JPG "vendor directory")
 
 Started looking through the directory. Found interesting items in the sub directories, and noticed PATH had the newest timestamp. Found Flag 1 inside the PATH file
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag1_CLEAN.JPG "Flag 1")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag1_CLEAN.JPG "Flag 1")
 
 Searched around more & discovered a file referring to specific security vulnerabilities to this version of PHPMailer. Confirmed version of PHPMailer is vulnerable to a RCE exploit listed using searchsploit. The team found and modified an exploit to the vulnerability
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_exploit.JPG "Bash Exploit Script")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_exploit.JPG "Bash Exploit Script")
 
 Ran the exploit. Tested operation of the exploit, then set up a listener on the Kali and used the exploit to have Target 2 call my Kali. Exported a proper shell using python
 
@@ -169,13 +169,13 @@ python -c 'import pty;pty.spawn("/bin/bash")'
 export TERM=linux
 ```
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_reverse_shell.JPG "Exploit Reverse Shell Command")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_reverse_shell.JPG "Exploit Reverse Shell Command")
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_shell.JPG "Getting the Shell!")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_shell.JPG "Getting the Shell!")
 
 Took stock of what we had. Found Flag 2 in the /var/www directory
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag2_CLEAN.JPG "Flag 2")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag2_CLEAN.JPG "Flag 2")
 
 And found the location of Flag 3. Had to return to the web browser to read it out
 
@@ -183,7 +183,7 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 192.168.1.115/wordpress/wp-content/uploads/2018/11/flag3.png
 ```
 
-![alt text]((https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag3_CLEAN.JPG "Flag 3")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag3_CLEAN.JPG "Flag 3")
 
 Found 3 of the 4 target flags. 
 
