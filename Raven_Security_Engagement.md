@@ -121,7 +121,7 @@ nmap -sV -O 192.168.1.115
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_nmap.JPG "nmap results")
 
-Target 2 looks identical to Target 1. Target 2 has the multiple ports open with services running.
+Target 2 looks identical to Target 1. Target 2 has multiple ports open with services running.
 
 | Port | Service Version |
 | :---: | :---: |
@@ -185,7 +185,7 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag3_CLEAN.jpg "Flag 3")
 
-Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Attempted to just switch to the root account. Was prompted for a password and unbeliveably was able to guess the exact password. The root password was as easy, if not easier, than guessing user michael's password from Target 1.
+Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Attempted to just switch to the root account. Was prompted for a password and unbelievably was able to guess the exact password. The root password was as easy, if not easier, than guessing user michael's password from Target 1.
 
 ```
 su root
@@ -215,7 +215,7 @@ Mitigation
 * Apply firewall rules to deny ICMP requests and not send responses.
 
 ### Sensitive Data Exposure ###
-During the engagement, the team found Target 1 has a flag exposed on the Wordpress website in the page source code for the service page. This was easily discoverable. Target 2 also had a flag exposed as well as list of vulnerabilities on that exact version of PHPMailer.
+During the engagement, the team found Target 1 has a flag exposed on the Wordpress website in the page source code for the service page. This was easily discoverable. Target 2 also had a flag exposed as well as a list of vulnerabilities on that exact version of PHPMailer.
 
 Mitigation
 * Remove flag from the source code.
@@ -229,7 +229,7 @@ Mitigation
 * Set a user policy that locks out the account for 30 minutes after 10 failed login attempts.
 * Enable 2-factor authentication on all accounts.
 * Enable a random 1-3 second delay on password validation to slow down any brute force attacks.
-* If more than 20 failed login attempts from the same IP address occurs sitewide within 10 minutes, blacklist that IP until it can be reviewed.
+* If more than 20 failed login attempts from the same IP address occur sitewide within 10 minutes, blacklist that IP until it can be reviewed.
 
 ### Outdated Software Version ###
 The team discovered an older version of Wordpress on Target 1 with many known vulnerabilities. The team also discovered an exploitable version of PHPMailer on Target 2.
@@ -263,7 +263,7 @@ Mitigation
 * Create a different user to be the default user to the MySQL database.
 
 ### Root Password easily guessed ###
-Target 1 and Target 2 had an unbelieveably easy password on the root account allowing it to be guessed. Both web servers used the same, easily guessed password for root account.
+Target 1 and Target 2 had an unbelievably easy password on the root account allowing it to be guessed. Both web servers used the same, easily guessed password for the root account.
 
 Mitigation
 * Change the root password to a long and complex password.
