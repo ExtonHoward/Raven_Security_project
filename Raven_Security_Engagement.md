@@ -157,7 +157,7 @@ Started looking through the directory. Found interesting items in the sub direct
 
 Searched around more & discovered a file referring to specific security vulnerabilities to this version of PHPMailer. Confirmed version of PHPMailer is vulnerable to a RCE exploit listed using searchsploit. The team found and modified an exploit to the vulnerability
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_exploit.JPG "Bash Exploit Script")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2-exploit.JPG "Bash Exploit Script")
 
 Ran the exploit. Tested operation of the exploit, then set up a listener on the Kali and used the exploit to have Target 2 call my Kali. Exported a proper shell using python
 
@@ -183,7 +183,7 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 192.168.1.115/wordpress/wp-content/uploads/2018/11/flag3.png
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag3_CLEAN.JPG "Flag 3")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/T2_flag3_CLEAN.jpg "Flag 3")
 
 Found 3 of the 4 target flags. 
 
