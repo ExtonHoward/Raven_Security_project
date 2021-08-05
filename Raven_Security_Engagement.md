@@ -157,7 +157,7 @@ Started looking through the directory. Found interesting items in the sub direct
 
 Searched around more & discovered a file referring to specific security vulnerabilities to this version of PHPMailer. Confirmed version of PHPMailer is vulnerable to a RCE exploit listed using searchsploit. The team found and modified an exploit to the vulnerability.
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2-exploit.JPG "Bash Exploit Script")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_exploit.JPG "Bash Exploit Script")
 
 Ran the exploit. Tested operation of the exploit, then set up a listener on the Kali and used the exploit to have Target 2 call my Kali. Exported a proper shell using python.
 
