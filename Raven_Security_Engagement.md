@@ -21,7 +21,7 @@ The team was tasked with performing network scans, finding any vulnerabilities t
 
 ## Target 1 Engagement ##
 
-Scanned target computer using nmap.
+Scanned Target 1 using nmap.
 
 ```
 nmap -sV -O 192.168.1.110
@@ -84,7 +84,7 @@ mysql -u root -pPASSWORD_REDACTED -D wordpress -e "select * from wp_users;"
 Found hashed credentials in the Users table. Decided to search the remainder of the database to see if there was anything else interesting. Located both Flag 3 and Flag 4 in the wp_posts table.
 
 ```
-mysql -u root -pPASSWORD_REDACTED -D wordpress -e "select * from wp_users;"
+mysql -u root -pPASSWORD_REDACTED -D wordpress -e "select * from wp_posts;"
 ```
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target1/T1_Flag3_Flag4.JPG "Flag 3 & Flag 4")
@@ -113,7 +113,7 @@ The team now has root access to the machine. Navigated to `/root` directory and 
 
 ## Target 2 Engagement ##
 
-Scanned target using nmap.
+Scanned Target 1 using nmap.
 
 ```
 nmap -sV -O 192.168.1.115
