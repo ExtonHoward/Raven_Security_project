@@ -185,11 +185,11 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag3_CLEAN.jpg "Flag 3")
 
-Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Attempted to just switch to the root account. Was prompted for a password and unbelievably was able to guess the exact password. The root password was as easy, if not easier, than guessing user michael's password from Target 1.
+Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Attempted to just switch to the root account. Was prompted for a password and unbelievably was able to guess the exact password.
 
-```
-su root
-```
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_facepalm.JPG "OMG")
+
+The root password was as easy, if not easier, than guessing user michael's password from Target 1.
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_su_root_clean.JPG "Switch to Root")
 
