@@ -255,7 +255,7 @@ Confirmed root shell on both machines. However, due to the weak credentials prev
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_facepalm.jpg "OMG")
 
-The root password was as easy, if not easier, than guessing user michael's password from Target 1.
+The root password was as easy, if not easier, than guessing user michael's password from Target 1. The root account was running default credentials
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_su_root_clean.JPG "Switch to Root")
 
@@ -302,7 +302,7 @@ Mitigation
 * Update MySQL to the latest version (as of the time of this report, that is version 8.0).
 
 ### Unauthenticated Privileged Programs ###
-The team discovered on Target 1 that one of the users had the ability to run Python with administrative privileges without having to authenitcate with a password.
+The team discovered on Target 1 that one of the users had the ability to run Python with administrative privileges without having to authenticate with a password.
 
 Mitigation
 * Require user input of password to run any SUDO commands
