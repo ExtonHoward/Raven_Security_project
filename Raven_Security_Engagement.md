@@ -277,7 +277,7 @@ Mitigation
 * Apply firewall rules to deny ICMP requests and not send responses.
 
 ### Sensitive Data Exposure ###
-During the engagement, the team found Target 1 has a flag exposed on the Wordpress website in the page source code for the service page. This was easily discoverable. Target 2 also had a flag exposed as well as a list of vulnerabilities on that exact version of PHPMailer.
+During the engagement, the team found Target 1 has a flag exposed on the Wordpress website in the page source code for the service page. This was easily discoverable. Target 2 also had a flag exposed as well as a list of vulnerabilities on that exact version of PHPMailer running
 
 Mitigation
 * Remove flag from the source code.
@@ -301,6 +301,12 @@ Mitigation
 * Update PHPMailer to the latest version (as of the time of this report, that is version 6.3.0).
 * Update MySQL to the latest version (as of the time of this report, that is version 8.0).
 
+### Unauthenticated Privileged Programs ###
+The team discovered on Target 1 that one of the users had the ability to run Python with administrative privileges without having to authenitcate with a password.
+
+Mitigation
+* Require user input of password to run any SUDO commands
+
 ### Unsalted Hashed Passwords ###
 The team obtained a password hash during the engagement. An open source tool was able to quickly break the hash and allowed the team to gain login credentials for a privileged account on Target 1. Target 2's password hashes were salted.
 
@@ -308,6 +314,7 @@ Mitigation
 * Restrict files with password hashes to admin level accounts.
 * Do not have any files that contain password hashes exposed to the internet.
 * Salt all password hashes.
+* Do not use MD5 for password hashes
 
 ### Weak Passwords ###
 The team found that the passwords on Target 1 that they were able to Brute Force and the hashed passwords that they were able to crack were short and not complex.
@@ -319,7 +326,7 @@ Mitigation
 * Require all passwords not be commonly used words, employees names, company names, or in the dictionary.
 
 ### MySQL Running as Root ###
-Found MySQL database on both Target 1 & Target 2 running with root credentials. This is not necessary as MySQL can be run as any user.
+Found MySQL database on both Target 1 & Target 2 running with root credentials. This directly allowed for privilege escalation on Target 2. MySQL should not be running as a Root user.
 
 Mitigation
 * Remove Root credentials from the wp-config.php file.
