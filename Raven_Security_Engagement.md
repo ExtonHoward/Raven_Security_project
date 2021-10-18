@@ -113,7 +113,7 @@ The team now has root access to the machine. Navigated to `/root` directory and 
 
 ## Target 2 Engagement ##
 
-Scanned Target 1 using nmap.
+Scanned Target 2 using nmap.
 
 ```
 nmap -sV -O 192.168.1.115
