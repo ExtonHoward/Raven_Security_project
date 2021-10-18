@@ -194,7 +194,7 @@ dpkg -l | grep mysql
 
 ![alt text](https://github.com/ExtonHoward/Raven_Security_project/blob/main/Screenshots/Target2/T2_mysql%20credentials_CLEAN.JPG "MySQL Credentials")
 
-Root again. For this UDF Privilege Escalation exploit to work, a command must be written in c code. The code is then compiled into a shared object which is similar to a library file. This is then read into the Database as raw binary. Because the MySQL service is running as Root, the data can be dumped into the correct directory for MySQL to use that command as an actual library. We can then create a function that uses that shared library & allows the attacking team to exploit it.
+Root again. There is a UDF privilege escalation in the exploit database written in C code. The code is then compiled into a shared object which is similar to a library file. This is then read into the Database as raw binary. Because the MySQL service is running as Root, the data can be dumped into the correct directory for MySQL to use that command as an actual library. We can then create a function that uses that shared library & allows the attacking team to exploit it.
 
 Let's attempt it
 
