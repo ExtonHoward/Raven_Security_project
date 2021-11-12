@@ -188,7 +188,7 @@ And found the location of Flag 3. Had to return to the web browser to read it ou
 Found 3 of the 4 target flags. Having found no sign of the 4th flag, the focus now turned to privilege escalation. Searched & discovered that the Target is running MySQL version 5.5. At the time of this report, the latest version of MySQL is 8.0. Performed a little searching & discovered a UDF (User Defined Function) Privilege Escalation exploit that works on mySQL 5.5 if it is running as the Root user. Checked the config file.
 
 ```
-ps aux | root
+ps aux | grep root
 dpkg -l | grep mysql
 ```
 
